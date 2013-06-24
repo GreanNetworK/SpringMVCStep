@@ -4,6 +4,7 @@
  */
 package springapp.web;
 
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,6 +14,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import springapp.service.SimpleProductManager;
 
 /**
  *
@@ -48,10 +50,12 @@ public class InventoryControllerNGTest {
         HttpServletRequest hsr = null;
         HttpServletResponse hsr1 = null;
         InventoryController instance = new InventoryController();
-        ModelAndView expResult = null;
+        instance.setProductManager(new SimpleProductManager());
+        
         ModelAndView result = instance.handleRequest(hsr, hsr1);
-        assertEquals(result, expResult);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(result.getViewName(), "hello");
+        assertNotNull(result.getModel());
+        Map<String,Object> map = (Map<String,Object>) result.getModel().get("model");
+        assertNotNull(map.get("now"));
     }
 }
